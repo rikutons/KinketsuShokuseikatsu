@@ -48,6 +48,8 @@ async function handleEvent(event) {
   const res = instance.get();
   res.then((response) => {
     const results = response.data.results;
+    console.log(JSON.stringify(response.data));
+    console.log(JSON.stringify(results));
     var storeList = []
     // jsonデータをリストに格納
     results.shop.forEach((storeData) => {
