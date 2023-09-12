@@ -36,7 +36,7 @@ async function handleEvent(event) {
   const lat = event.message.latitude
   // 経度
   const lng = event.message.longitude
-  const instance = axios.create({
+  let instance = axios.create({
     baseURL: "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/",
     params:{
       "key" : config.recruitKey,
@@ -45,13 +45,11 @@ async function handleEvent(event) {
       "format" : "json"
     }
   })
-  const message = {
-    type: "text",
-    text: lat + lng
-  }
-  return client.replyMessage(event.replyToken, message)
-  const res = instance.get();
-  res.then((response) => {
+  return client.replyMessage(event.replyToken, {
+    type: 'text',
+    text: '位置情報ありがとう！'
+  })
+  await instance.get().then((response) => {
     // const results = response.data.results;
     // console.log(JSON.stringify(response.data));
     // console.log(JSON.stringify(results));
