@@ -1,31 +1,41 @@
+const express = require("express")
 const line = require('@line/bot-sdk');
 const config = {
   channelAccessToken: process.env.TOKEN,
   channelSecret:  process.env.SECRET,
   recruitKey:  process.env.RECRUIT_APIKEY
 };
-const client = new line.Client(config);
+
 const axios = require("axios").default;
+const PORT = process.env.PORT || 3000;
 
-module.exports = async function (context, req) {
-  context.log('JavaScript HTTP trigger function processed a request.');
+// (process.env.NOW_REGION) ? module.exports = app : app.listen(PORT);
+// console.log(`Server running at ${PORT}`);
+const app = express()
+app.get('/', (req, res) => res.send('Hello LINE BOT!(GET)')); //ブラウザ確認用(無くても問題ない)
+app.post('/webhook', line.middleware(config), (req, res) => {
+    Promise
+      .all(req.body.events.map(handleEvent))
+      .then((result) => res.json(result))
+      .catch((err) => {
+ 	    console.error(err);
+        res.status(500).end();
+      });
+});
 
-  if (req.body.events[0].message.type !== 'location') {
-    return client.replyMessage(req.body.events[0].replyToken, {
+const client = new line.Client(config);
+
+async function handleEvent(event) {
+  if (event.message.type !== 'location') {
+    return client.replyMessage(event.replyToken, {
       type: 'text',
       text: '位置情報を送信してね！'
     })
   }
-  else {
-    context.res = {
-      status: 200,
-      body: "Please check the query string in the request body"
-    };
-  };
   // 緯度
-  const lat = req.body.events[0].message.latitude
+  const lat = event.message.latitude
   // 経度
-  const lng = req.body.events[0].message.longitude
+  const lng = event.message.longitude
   const instance = axios.create({
     baseURL: "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/",
     params:{
@@ -54,9 +64,9 @@ module.exports = async function (context, req) {
       text: theStore.name
     }
     // client.replyMessage(req.body.events[0].replyToken, {type:"text", text:"aaa"})
-    // client.replyMessage(req.body.events[0].replyToken, message)
+    client.replyMessage(event.replyToken, message)
   });
-};
+}
 
-// (process.env.NOW_REGION) ? module.exports = app : app.listen(PORT);
-// console.log(`Server running at ${PORT}`);
+(process.env.NOW_REGION) ? module.exports = app : app.listen(PORT);
+console.log(`Server running at ${PORT}`);
