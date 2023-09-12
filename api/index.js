@@ -63,7 +63,7 @@ async function handleEvent(event) {
     // const theStore = storeList[Math.floor(Math.random() * storeList.length)];
     const message = {
       type: "text",
-      text: lat + ", " + lng
+      text: "scoop test"
     }
     // client.replyMessage(req.body.events[0].replyToken, {type:"text", text:"aaa"})
     return client.replyMessage(event.replyToken, message)
