@@ -42,7 +42,7 @@ async function handleEvent(event) {
       "key" : config.recruitKey,
       "lat" : lat,
       "lng" : lng,
-      "format" : "jsonp"
+      "format" : "json"
     }
   })
   const res = instance.get();
