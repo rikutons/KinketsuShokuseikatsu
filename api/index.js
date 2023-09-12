@@ -45,6 +45,11 @@ async function handleEvent(event) {
       "format" : "json"
     }
   })
+  const message = {
+    type: "text",
+    text: lat + lng
+  }
+  return client.replyMessage(event.replyToken, message)
   const res = instance.get();
   res.then((response) => {
     // const results = response.data.results;
