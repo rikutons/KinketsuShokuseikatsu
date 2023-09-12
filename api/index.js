@@ -47,23 +47,23 @@ async function handleEvent(event) {
   })
   const res = instance.get();
   res.then((response) => {
-    const results = response.data.results;
-    console.log(JSON.stringify(response.data));
-    console.log(JSON.stringify(results));
-    var storeList = []
-    // jsonデータをリストに格納
-    results.shop.forEach((storeData) => {
-      var store = {
-        name: storeData.name,
-        hotpepper: storeData.urls.pc,
-        image: storeData.photo.pc.l
-      }
-      storeList.push(store);
-    })
-    const theStore = storeList[Math.floor(Math.random() * storeList.length)];
+    // const results = response.data.results;
+    // console.log(JSON.stringify(response.data));
+    // console.log(JSON.stringify(results));
+    // var storeList = []
+    // // jsonデータをリストに格納
+    // results.shop.forEach((storeData) => {
+    //   var store = {
+    //     name: storeData.name,
+    //     hotpepper: storeData.urls.pc,
+    //     image: storeData.photo.pc.l
+    //   }
+    //   storeList.push(store);
+    // })
+    // const theStore = storeList[Math.floor(Math.random() * storeList.length)];
     const message = {
       type: "text",
-      text: theStore.name
+      text: lat + ", " + lng
     }
     // client.replyMessage(req.body.events[0].replyToken, {type:"text", text:"aaa"})
     return client.replyMessage(event.replyToken, message)
