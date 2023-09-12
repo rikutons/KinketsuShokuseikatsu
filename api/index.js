@@ -66,7 +66,7 @@ async function handleEvent(event) {
       text: theStore.name
     }
     // client.replyMessage(req.body.events[0].replyToken, {type:"text", text:"aaa"})
-    client.replyMessage(event.replyToken, message)
+    return client.replyMessage(event.replyToken, message)
   });
 }
 
