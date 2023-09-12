@@ -1,4 +1,5 @@
 const express = require("express")
+console.log("log test A")
 const line = require('@line/bot-sdk');
 const config = {
   channelAccessToken: process.env.TOKEN,
@@ -18,10 +19,6 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     Promise
       .all(req.body.events.map(handleEvent))
       .then((result) => res.json(result))
-      .catch((err) => {
-        console.error(err);
-        res.status(500).end();
-      });
 });
 
 
@@ -36,6 +33,7 @@ async function handleEvent(event) {
   const lat = event.message.latitude
   // 経度
   const lng = event.message.longitude
+  console.log("log test B")
   let instance = axios.create({
     baseURL: "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/",
     params:{
@@ -46,6 +44,7 @@ async function handleEvent(event) {
     }
   })
   await instance.get().then((response) => {
+    console.log("log test C")
     const results = response.data.results;
     console.log(JSON.stringify(response.data));
     console.log(JSON.stringify(results));
