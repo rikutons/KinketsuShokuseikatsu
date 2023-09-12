@@ -8,7 +8,7 @@ const client = new line.Client(config);
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
-    if (req.type !== 'message' || req.message.type !== 'location') {
+    if (req.body.events[0].message.type !== 'location') {
         return client.replyMessage(req.body.events[0].replyToken, {
             type: 'text',
             text: '位置情報を送信してね！'
@@ -21,9 +21,9 @@ module.exports = async function (context, req) {
         };
     };
     // 緯度
-    const lat = req.message.latitude
+    const lat = req.body.events[0].message.latitude
     // 経度
-    const lng = req.message.longitude
+    const lng = req.body.events[0].message.longitude
 
     const respon = lat+","+lng
 
