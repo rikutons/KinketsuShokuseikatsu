@@ -8,23 +8,11 @@ const client = new line.Client(config);
 module.exports = async function (context, req) {
     context.log('JavaScript HTTP trigger function processed a request.');
 
-    if (req.query.message || (req.body && req.body.events)) {
-        if (req.body && req.body.events[0]) {
-            message = {
-                type: "text",
-                text: req.body.events[0].message.text
-            }
-            console.log(message);
-            if (req.body.events[0].replyToken) {
-                client.replyMessage(req.body.events[0].replyToken, message);
-            }
-        }
-        else {
-            context.res = {
-                status: 200,
-                body: req.query.message
-            };
-        }
+    if (event.type !== 'message' || event.message.type !== 'location') {
+        return client.replyMessage(event.replyToken, {
+            type: 'text',
+            text: '位置情報を送信してね！'
+        })
     }
     else {
         context.res = {
@@ -32,4 +20,17 @@ module.exports = async function (context, req) {
             body: "Please check the query string in the request body"
         };
     };
+    // 緯度
+    const lat = event.message.latitude
+    // 経度
+    const lng = event.message.longitude
+
+    const respon = lat+","+lng
+
+    const message = {
+        type: "text",
+        text: respon
+    }
+    client.replyMessage(req.body.events[0].replyToken, message)
+    
 };
