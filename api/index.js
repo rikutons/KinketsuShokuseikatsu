@@ -72,7 +72,7 @@ async function handleEvent(event) {
       latitude: lat, // 取得した緯度
       longitude: lng, // 取得した経度
       radius: 1500, // 今回は半径1500m
-      price: 1, // 多分安いの
+      price: 1, // 10$以下
       open_now: "true", // 今開いてるお店
       limit: 10, // 最大10件
     },
